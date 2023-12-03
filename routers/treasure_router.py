@@ -75,12 +75,21 @@ async def search_post(
 
 @router.get(
     "/list",
-    name="Post 리스트 조회",
-    description="Post 테이블의 모든 Record를 가져옵니다",
+    name="모험가 리스트 조회",
+    description="Ranger 테이블의 모든 Record를 가져옵니다",
     response_model=List[treasure_schema.ReadTreasure],
 )
 def get_list(crud=Depends(get_crud)):
     return crud.get_list(Ranger)
+
+
+@router.get(
+    "/today_list",
+    name="수령자 리스트 조회",
+    description="Ranger 테이블의 모든 수령자 Record를 가져옵니다",
+)
+def get_list(crud=Depends(get_crud)):
+    return {"count": crud.search_today_record(Ranger)}
 
 
 @router.get(

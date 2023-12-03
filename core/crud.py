@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import Union
+from datetime import datetime, timedelta
 
 
 class CRUD:
@@ -83,3 +84,20 @@ class CRUD:
 
         result = self.session.query(table).filter(*filters).all()
         return result
+
+    def search_today_record(self, table: BaseModel):
+        # 현재 날짜와 시간
+        today = datetime.now()
+        # 오늘 0시 0분 0초
+        start_of_today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+        # 내일 0시 0분 0초
+        start_of_tomorrow = start_of_today + timedelta(days=1)
+
+        filters = [
+            getattr(table, "update_time") >= start_of_today,
+            getattr(table, "update_time") < start_of_tomorrow,
+            getattr(table, "complete") == 2
+        ]
+
+        result = self.session.query(table).filter(*filters).all()
+        return len(result)
