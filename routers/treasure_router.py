@@ -1,3 +1,4 @@
+import pytz
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.responses import Response
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
@@ -149,5 +150,7 @@ async def delete_post(id: str, crud=Depends(get_crud)):
 
 @router.get("/time", name="서버시간 가져오기", description="현재 서버시간을 가져옵니다")
 async def print_time():
-    print(datetime.now())
-    return datetime.now()
+    seoul_timezone = pytz.timezone("Asia/Seoul")
+    today = datetime.now(seoul_timezone)
+    print(today)
+    return today

@@ -4,6 +4,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import Union
 from datetime import datetime, timedelta
+import pytz
 
 
 class CRUD:
@@ -87,7 +88,8 @@ class CRUD:
 
     def search_today_record(self, table: BaseModel):
         # 현재 날짜와 시간
-        today = datetime.now()
+        seoul_timezone = pytz.timezone("Asia/Seoul")
+        today = datetime.now(seoul_timezone)
         # 오늘 0시 0분 0초
         start_of_today = today.replace(hour=0, minute=0, second=0, microsecond=0)
         # 내일 0시 0분 0초
