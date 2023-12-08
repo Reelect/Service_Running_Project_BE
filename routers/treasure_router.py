@@ -7,7 +7,7 @@ from core.schema import RequestPage
 from core.utils import get_crud
 from models.treasure_model import Ranger
 from schemas import treasure_schema
-
+from datetime import datetime
 from typing import List
 
 router = APIRouter(
@@ -146,3 +146,8 @@ async def delete_post(id: str, crud=Depends(get_crud)):
         raise HTTPException(status_code=404, detail="Record not found")
     return Response(status_code=HTTP_204_NO_CONTENT)
 
+
+@router.get("/time", name="서버시간 가져오기", description="현재 서버시간을 가져옵니다")
+async def print_time():
+    print(datetime.now())
+    return datetime.now()
